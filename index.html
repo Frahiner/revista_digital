@@ -5,62 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tecnologías Web Backend</title>
 
-    <style>
-* {
+<style>
+  /* CONFIGURACIÓN BÁSICA */
+  * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
+  }
 
-body {
+  body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     overflow-x: hidden;
-}
+  }
 
-.revista-container {
+  /* CONTENEDOR GENERAL */
+  .revista-container {
     max-width: 1200px;
     margin: 0 auto;
     background: white;
     box-shadow: 0 0 30px rgba(0,0,0,0.3);
     position: relative;
-}
+  }
 
-.pagina {
+  /* PÁGINAS */
+  .pagina {
     min-height: 100vh;
     padding: 40px;
     display: none;
     position: relative;
     background: white;
-}
+    animation: fadeIn 0.6s ease-in-out;
+  }
 
-.pagina.activa {
+  .pagina.activa {
     display: block;
-}
-.pagina.portada.activa {
-    display: flex;
-}
-.pagina.contraportada.activa {
-    display: flex;
-}
+  }
 
-/* NAVEGACIÓN */
-.navegacion {
+  .pagina.portada.activa,
+  .pagina.contraportada.activa {
+    display: flex;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* BARRA DE PROGRESO */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #ff6b6b);
+    z-index: 999;
+    transition: width 0.3s ease;
+  }
+
+  /* NAVEGACIÓN GENERAL (ESCRITORIO) */
+  .navegacion {
     position: fixed;
     top: 50%;
     right: 20px;
     transform: translateY(-50%);
     z-index: 1000;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0, 0, 0, 0.9);
     border-radius: 20px;
     padding: 15px 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-height: 90vh;
+    overflow-y: auto;
+  }
 
-.nav-btn {
+  .nav-btn {
     background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white;
     border: none;
@@ -72,38 +93,22 @@ body {
     min-width: 70px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-}
+    white-space: nowrap;
+  }
 
-.nav-btn:hover {
+  .nav-btn:hover {
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-}
+  }
 
-@media (max-width: 768px) {
-    .navegacion {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        right: auto;
-        top: auto;
-        transform: translateX(-50%);
-        flex-direction: row;
-        padding: 10px 15px;
-        overflow-x: auto;
-        max-width: calc(100vw - 40px);
-    }
-    
-    .nav-btn {
-        min-width: 60px;
-        font-size: 9px;
-        padding: 8px 4px;
-        white-space: nowrap;
-    }
-}
+  .nav-btn.activo {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+  }
 
-/* PORTADA */
-.portada {
+  /* PORTADA */
+  .portada {
+    display: flex;
     background: linear-gradient(45deg, #1e3c72, #2a5298, #3b82f6);
     color: white;
     text-align: center;
@@ -112,34 +117,31 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
-}
+  }
 
-.portada::before {
+  .portada::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
     animation: flotante 20s linear infinite;
-}
+  }
 
-@keyframes flotante {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-    100% { transform: translateY(0px); }
-}
+  @keyframes flotante {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
+  }
 
-.logo-universidad {
+  .logo-universidad {
     background: rgba(255,255,255,0.1);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 30px;
     backdrop-filter: blur(10px);
-}
+  }
 
-.titulo-principal {
+  .titulo-principal {
     font-size: 3.5em;
     font-weight: bold;
     margin: 20px 0;
@@ -148,43 +150,43 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-}
+  }
 
-.subtitulo {
+  .subtitulo {
     font-size: 1.8em;
     margin-bottom: 30px;
     opacity: 0.9;
-}
+  }
 
-.info-estudiante {
+  .info-estudiante {
     background: rgba(255,255,255,0.2);
     padding: 25px;
     border-radius: 15px;
     margin-top: 30px;
     backdrop-filter: blur(10px);
-}
+  }
 
-/* ÍNDICE */
-.indice {
+  /* ÍNDICE */
+  .indice {
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
+  }
 
-.indice h1 {
+  .indice h1 {
     color: #2c3e50;
     font-size: 2.8em;
     text-align: center;
     margin-bottom: 40px;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
+  }
 
-.lista-contenidos {
+  .lista-contenidos {
     background: white;
     border-radius: 15px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
+  }
 
-.item-indice {
+  .item-indice {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -194,70 +196,46 @@ body {
     background: linear-gradient(90deg, #f8f9fa, #e9ecef);
     border-radius: 8px;
     transition: all 0.3s ease;
-}
+    cursor: pointer;
+  }
 
-.item-indice:hover {
+  .item-indice:hover {
     transform: translateX(10px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+  }
 
-.item-indice {
-    cursor: pointer;
-}
-
-.item-indice:active {
+  .item-indice:active {
     transform: translateX(5px) scale(0.98);
-}
+  }
 
-/* Efecto de página tipo revista */
-.pagina {
-    animation: fadeIn 0.6s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Indicador de progreso */
-.progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #4CAF50, #ff6b6b);
-    z-index: 999;
-    transition: width 0.3s ease;
-}
-
-/* CONTENIDO GENERAL */
-.contenido-pagina {
+  /* CONTENIDO GENERAL */
+  .contenido-pagina {
     line-height: 1.8;
-}
+  }
 
-.titulo-seccion {
+  .titulo-seccion {
     color: #2c3e50;
     font-size: 2.5em;
     margin-bottom: 30px;
     border-bottom: 3px solid #3498db;
     padding-bottom: 15px;
-}
+  }
 
-.subseccion {
+  .subseccion {
     margin: 30px 0;
     padding: 25px;
     background: linear-gradient(135deg, #f1f3f4, #e8eaf6);
     border-radius: 12px;
     border-left: 5px solid #4CAF50;
-}
+  }
 
-.subseccion h3 {
+  .subseccion h3 {
     color: #1976d2;
     font-size: 1.8em;
     margin-bottom: 15px;
-}
+  }
 
-.codigo-ejemplo {
+  .codigo-ejemplo {
     background: #1e1e1e;
     color: #d4d4d4;
     padding: 20px;
@@ -266,39 +244,40 @@ body {
     font-family: 'Courier New', monospace;
     overflow-x: auto;
     border-left: 4px solid #ff6b6b;
-}
+  }
 
-.destacado {
+  .destacado {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     padding: 20px;
     border-radius: 12px;
     margin: 20px 0;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-}
-.breadcrumb {
+  }
+
+  .breadcrumb {
     background: rgba(255,255,255,0.9);
     padding: 10px 15px;
     border-radius: 20px;
     margin-bottom: 20px;
     font-size: 0.9em;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+  }
 
-/* EDITORIAL */
-.editorial {
+  /* EDITORIAL */
+  .editorial {
     background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-}
+  }
 
-.carta-editorial {
+  .carta-editorial {
     background: white;
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     position: relative;
-}
+  }
 
-.carta-editorial::before {
+  .carta-editorial::before {
     content: '"';
     font-size: 120px;
     color: #ff6b6b;
@@ -306,34 +285,34 @@ body {
     top: -20px;
     left: 20px;
     opacity: 0.3;
-}
+  }
 
-/* DIRECTORIO */
-.directorio {
+  /* DIRECTORIO */
+  .directorio {
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-}
+  }
 
-.equipo-grid {
+  .equipo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
     margin-top: 30px;
-}
+  }
 
-.miembro-equipo {
+  .miembro-equipo {
     background: white;
     padding: 30px;
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     transition: transform 0.3s ease;
-}
+  }
 
-.miembro-equipo:hover {
+  .miembro-equipo:hover {
     transform: translateY(-10px);
-}
+  }
 
-.avatar {
+  .avatar {
     width: 80px;
     height: 80px;
     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -345,69 +324,75 @@ body {
     font-size: 2em;
     color: white;
     font-weight: bold;
-}
+  }
 
-/* PÁGINAS DE CONTENIDO */
-.contenido-hojas-estilo {
-    background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
-}
+  /* PÁGINAS DE CONTENIDO */
+  .contenido-hojas-estilo { background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%); }
+  .contenido-selectores   { background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%); }
+  .contenido-listas        { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+  .contenido-section       { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+  .contenido-hgroup        { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+  .contenido-posicionamiento { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
 
-.contenido-selectores {
-    background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%);
-}
-
-.contenido-listas {
-    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-}
-
-.contenido-section {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-}
-
-.contenido-hgroup {
-    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-}
-
-.contenido-posicionamiento {
-    background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
-}
-
-/* CONTRAPORTADA */
-.contraportada {
+  /* CONTRAPORTADA */
+  .contraportada {
+    display: flex;
     background: linear-gradient(45deg, #2c3e50, #34495e, #4a6741);
     color: white;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-}
+  }
 
-.creditos-finales {
+  .creditos-finales {
     background: rgba(255,255,255,0.1);
     padding: 40px;
     border-radius: 20px;
     backdrop-filter: blur(10px);
     margin: 20px;
-}
+  }
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
     .pagina {
-        padding: 20px;
-}
-            
+      padding: 20px;
+    }
+
     .titulo-principal {
-        font-size: 2.5em;
-}
-            
+      font-size: 2.5em;
+    }
+
     .navegacion {
-        position: static;
-        text-align: center;
-        margin-bottom: 20px;
-        border-radius: 15px;
-}
-}
-    </style>
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      flex-direction: row;
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 95vw;
+      padding: 10px 12px;
+      gap: 6px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+
+    .navegacion::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-btn {
+      min-width: 70px;
+      font-size: 10px;
+      padding: 10px 8px;
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+  }
+</style>
 
 </head>
 <body>
