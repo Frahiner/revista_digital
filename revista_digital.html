@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologías Web Backend</title>
+
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow-x: hidden;
+}
+
+.revista-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.pagina {
+    min-height: 100vh;
+    padding: 40px;
+    display: none;
+    position: relative;
+    background: white;
+}
+
+.pagina.activa {
+    display: block;
+}
+
+/* NAVEGACIÓN */
+.navegacion {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(0,0,0,0.8);
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.nav-btn {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    margin: 0 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+    background: #45a049;
+    transform: scale(1.05);
+}
+
+.nav-btn.activo {
+    background: #ff6b6b;
+}
+
+/* PORTADA */
+.portada {
+    background: linear-gradient(45deg, #1e3c72, #2a5298, #3b82f6);
+    color: white;
+    text-align: center;
+    display: flex;
+        flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.portada::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="30" cy="80" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+    animation: flotante 20s linear infinite;
+}
+
+@keyframes flotante {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+.logo-universidad {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.titulo-principal {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    background: linear-gradient(45deg, #fff, #ffeb3b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitulo {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.info-estudiante {
+    background: rgba(255,255,255,0.2);
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+    backdrop-filter: blur(10px);
+}
+
+/* ÍNDICE */
+.indice {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.indice h1 {
+    color: #2c3e50;
+    font-size: 2.8em;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.lista-contenidos {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.item-indice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-left: 4px solid #3498db;
+    background: linear-gradient(90deg, #f8f9fa, #e9ecef);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.item-indice:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* CONTENIDO GENERAL */
+.contenido-pagina {
+    line-height: 1.8;
+}
+
+.titulo-seccion {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 15px;
+}
+
+.subseccion {
+    margin: 30px 0;
+    padding: 25px;
+    background: linear-gradient(135deg, #f1f3f4, #e8eaf6);
+    border-radius: 12px;
+    border-left: 5px solid #4CAF50;
+}
+
+.subseccion h3 {
+    color: #1976d2;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+}
+
+.codigo-ejemplo {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+    border-left: 4px solid #ff6b6b;
+}
+
+.destacado {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* EDITORIAL */
+.editorial {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.carta-editorial {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.carta-editorial::before {
+    content: '"';
+    font-size: 120px;
+    color: #ff6b6b;
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    opacity: 0.3;
+}
+
+/* DIRECTORIO */
+.directorio {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.equipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.miembro-equipo {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.miembro-equipo:hover {
+    transform: translateY(-10px);
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
+}
+
+/* PÁGINAS DE CONTENIDO */
+.contenido-hojas-estilo {
+    background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
+}
+
+.contenido-selectores {
+    background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%);
+}
+
+.contenido-listas {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.contenido-section {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.contenido-hgroup {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.contenido-posicionamiento {
+    background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+
+/* CONTRAPORTADA */
+.contraportada {
+    background: linear-gradient(45deg, #2c3e50, #34495e, #4a6741);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.creditos-finales {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    margin: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .pagina {
+        padding: 20px;
+}
+            
+    .titulo-principal {
+        font-size: 2.5em;
+}
+            
+    .navegacion {
+        position: static;
+        text-align: center;
+        margin-bottom: 20px;
+        border-radius: 15px;
+}
+}
+    </style>
+
+</head>
+<body>
+    <div class="revista-container">
+        <!-- NAVEGACIÓN -->
+        <div class="navegacion">
+            <button class="nav-btn activo" onclick="mostrarPagina(0)">Portada</button>
+            <button class="nav-btn" onclick="mostrarPagina(1)">Índice</button>
+            <button class="nav-btn" onclick="mostrarPagina(2)">Editorial</button>
+            <button class="nav-btn" onclick="mostrarPagina(3)">Directorio</button>
+            <button class="nav-btn" onclick="mostrarPagina(4)">Hojas CSS</button>
+            <button class="nav-btn" onclick="mostrarPagina(5)">Selectores</button>
+            <button class="nav-btn" onclick="mostrarPagina(6)">Listas</button>
+            <button class="nav-btn" onclick="mostrarPagina(7)">Section</button>
+            <button class="nav-btn" onclick="mostrarPagina(8)">Hgroup</button>
+            <button class="nav-btn" onclick="mostrarPagina(9)">Posicionamiento</button>
+            <button class="nav-btn" onclick="mostrarPagina(10)">Contraportada</button>
+        </div>
+
+        <!-- PÁGINA 1: PORTADA -->
+<div class="pagina portada activa">
+    <div class="logo-universidad">
+        <h4>REPÚBLICA BOLIVARIANA DE VENEZUELA</h4>
+        <h3>UNIVERSIDAD BICENTENARIA DE ARAGUA</h3>
+        <p>VICERRECTORADO ACADÉMICO</p>
+        <p>DECANATO DE LA FACULTAD DE INGENIERÍA</p>
+        <p>ESCUELA DE INGENIERÍA DE SISTEMAS</p>
+        <p>SAN ANTONIO DE LOS ALTOS – ESTADO MIRANDA</p>
+    </div>
+            
+    <h1 class="titulo-principal">Tu revistica web</h1>
+    <h2 class="subtitulo">Tecnologías Web Backend con JavaScript</h2>
+            
+    <div class="info-estudiante">
+        <h3>Desarrollado por:</h3>
+        <p><strong>Frahiner Camejo</strong></p>
+        <p>C.I.: 28.413.050</p>
+        <p>Estudiante de Ingeniería de Sistemas</p>
+        <p>Año 2025</p>
+    </div>
+</div>
+
+        <!-- PÁGINA 2: ÍNDICE -->
+<div class="pagina indice">
+    <h1>Índice de Contenidos</h1>
+    <div class="lista-contenidos">
+        <div class="item-indice">
+            <span><strong>Editorial</strong> - Introducción a las tecnologías web</span>
+            <span>Página 3</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Directorio</strong> - Equipo de desarrollo</span>
+            <span>Página 4</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Hojas de Estilo CSS</strong> - Fundamentos y aplicaciones</span>
+            <span>Página 5</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Selectores CSS</strong> - Tipos y uso avanzado</span>
+            <span>Página 6</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Listas de Declaraciones</strong> - Propiedades y valores</span>
+            <span>Página 7</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Elemento Section</strong> - Estructura semántica</span>
+            <span>Página 8</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Elemento Hgroup</strong> - Agrupación de títulos</span>
+            <span>Página 9</span>
+        </div>
+        <div class="item-indice">
+            <span><strong>Posicionamiento</strong> - Layout y diseño web</span>
+            <span>Página 10</span>
+        </div>
+    </div>
+</div>
+
+        <!-- PÁGINA 3: EDITORIAL -->
+<div class="pagina editorial">
+    <h1 class="titulo-seccion">Editorial</h1>
+    <div class="carta-editorial">
+        <h2>Bienvenidos al Futuro del Desarrollo Web</h2>
+        <p>En esta era digital, el desarrollo web backend con JavaScript ha revolucionado la manera en que concebimos y construimos aplicaciones web. Esta revista presenta un recorrido completo por las tecnologías fundamentales que todo desarrollador moderno debe dominar.</p>
+
+        <p>Desde las hojas de estilo CSS hasta las técnicas avanzadas de posicionamiento, cada página de esta publicación ha sido diseñada para proporcionar conocimiento práctico y teórico sobre las herramientas que impulsan la web moderna.</p>
+
+        <p>JavaScript, como lenguaje versátil y potente, nos permite crear experiencias interactivas tanto en el frontend como en el backend, especialmente con tecnologías como Node.js que han ampliado sus horizontes hacia el desarrollo de servidores robustos y escalables.</p>
+
+        <div class="destacado">
+            <h3>Objetivo de esta Revista</h3>
+            <p>Establecer una base sólida de conocimientos en tecnologías backend utilizando JavaScript, proporcionando las herramientas conceptuales y prácticas necesarias para el desarrollo profesional de sitios web modernos.</p>
+        </div>
+
+        <p>Esperamos que esta publicación sirva como guía de referencia en su trayectoria como desarrollador, inspirando la creación de soluciones innovadoras y eficientes.</p>
+                
+        <p><em>El Equipo Editorial</em></p>
+    </div>
+</div>
+
+        <!-- PÁGINA 4: DIRECTORIO -->
+<div class="pagina directorio">
+    <h1 class="titulo-seccion">Directorio del Equipo</h1>
+    <div class="equipo-grid">
+        <div class="miembro-equipo">
+            <div class="avatar">FC</div>
+            <h3>Frahiner Camejo</h3>
+            <p><strong>Editor Principal</strong></p>
+            <p>C.I.: 28.413.050</p>
+            <p>Estudiante de Ingeniería de Sistemas especializado en desarrollo web backend con JavaScript y tecnologías modernas.</p>
+        </div>
+                
+        <div class="miembro-equipo">
+            <div class="avatar">DT</div>
+            <h3>Tu revistica web Team</h3>
+            <p><strong>Equipo de Investigación</strong></p>
+            <p>Grupo colaborativo enfocado en la investigación y documentación de tecnologías web emergentes y mejores prácticas de desarrollo.</p>
+        </div>
+                
+                
+        <div class="miembro-equipo">
+            <div class="avatar">UBA</div>
+            <h3>Universidad Bicentenaria de Aragua</h3>
+            <p><strong>Institución Académica</strong></p>
+            <p>Escuela de Ingeniería de Sistemas<br>San Antonio de los Altos, Estado Miranda</p>
+        </div>
+    </div>
+</div>
+
+        <!-- PÁGINA 5: HOJAS DE ESTILO -->
+<div class="pagina contenido-hojas-estilo">
+    <h1 class="titulo-seccion">Hojas de Estilo CSS</h1>
+    <div class="contenido-pagina">
+        <div class="subseccion">
+            <h3>¿Qué son las Hojas de Estilo?</h3>
+            <p>Las Hojas de Estilo en Cascada (CSS) son un lenguaje de diseño gráfico que permite definir y controlar la presentación de documentos HTML. CSS separa el contenido de la presentación, proporcionando flexibilidad y mantenibilidad en el desarrollo web.</p>
+        </div>
+
+        <div class="subseccion">
+            <h3>Tipos de Hojas de Estilo</h3>
+            <p><strong>CSS Interno:</strong> Se define dentro del elemento &lt;head&gt; del documento HTML usando la etiqueta &lt;style&gt;.</p>
+            <div class="codigo-ejemplo">
+&lt;head&gt;
+    &lt;style&gt;
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+            </div>
+                    
+            <p><strong>CSS Externo:</strong> Se almacena en archivos .css separados y se vincula al HTML.</p>
+            <div class="codigo-ejemplo">
+&lt;link rel="stylesheet" href="estilos.css"&gt;
+            </div>
+                    
+            <p><strong>CSS Inline:</strong> Se aplica directamente a elementos HTML usando el atributo style.</p>
+            <div class="codigo-ejemplo">
+&lt;p style="color: blue; font-size: 16px;"&gt;Texto con estilo inline&lt;/p&gt;
+            </div>
+        </div>
+
+        <div class="destacado">
+            <h3>Ventajas de CSS</h3>
+            <ul>
+                <li>Separación de contenido y presentación</li>
+                <li>Reutilización de estilos</li>
+                <li>Mantenimiento simplificado</li>
+                <li>Carga más rápida de páginas</li>
+                <li>Mejor accesibilidad</li>
+            </ul>
+        </div>
+
+        <div class="subseccion">
+            <h3>Cascada y Herencia</h3>
+            <p>La "cascada" en CSS determina qué estilos se aplican cuando hay múltiples reglas que afectan al mismo elemento. El orden de prioridad es:</p>
+            <ol>
+                <li>Estilos inline (!important)</li>
+                <li>IDs</li>
+                <li>Clases, atributos y pseudo-clases</li>
+                <li>Elementos y pseudo-elementos</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+        <!-- PÁGINA 6: SELECTORES -->
+<div class="pagina contenido-selectores">
+    <h1 class="titulo-seccion">Selectores CSS</h1>
+    <div class="contenido-pagina">
+        <div class="subseccion">
+            <h3>Selectores Básicos</h3>
+            <p><strong>Selector Universal (*):</strong> Selecciona todos los elementos.</p>
+            <div class="codigo-ejemplo">
+* {
+    margin: 0;
+    padding: 0;
+}
+            </div>
+
+            <p><strong>Selector de Tipo:</strong> Selecciona elementos por su nombre de etiqueta.</p>
+            <div class="codigo-ejemplo">
+p {
+    color: #333;
+    line-height: 1.6;
+}
+            </div>
+
+            <p><strong>Selector de Clase:</strong> Selecciona elementos con una clase específica.</p>
+            <div class="codigo-ejemplo">
+.destacado {
+    background-color: yellow;
+    font-weight: bold;
+}
+            </div>
+                    
+            <p><strong>Selector de ID:</strong> Selecciona un elemento con un ID específico.</p>
+            <div class="codigo-ejemplo">
+#encabezado {
+    background-color: #4CAF50;
+    color: white;
+}
+            </div>
+        </div>
+
+        <div class="subseccion">
+            <h3>Selectores Combinadores</h3>
+            <p><strong>Descendiente:</strong> Selecciona elementos que son descendientes de otro elemento.</p>
+            <div class="codigo-ejemplo">
+div p {
+    font-size: 14px;
+}
+            </div>
+                    
+            <p><strong>Hijo Directo (>):</strong> Selecciona elementos hijos directos.</p>
+            <div class="codigo-ejemplo">
+ul > li {
+    list-style-type: none;
+}
+            </div>
+                    
+            <p><strong>Hermano Adyacente (+):</strong> Selecciona el primer hermano que sigue inmediatamente.</p>
+            <div class="codigo-ejemplo">
+h2 + p {
+    margin-top: 0;
+}
+            </div>
+        </div>
+
+        <div class="destacado">
+            <h3>Selectores de Atributo</h3>
+            <div class="codigo-ejemplo">
+/* Elemento con atributo específico */
+input[type="text"] {
+    border: 1px solid #ccc;
+}
+
+/* Atributo que contiene un valor */
+a[href*="javascript"] {
+    color: orange;
+}
+
+/* Atributo que termina con un valor */
+img[src$=".jpg"] {
+    border: 2px solid blue;
+}
+            </div>
+        </div>
+
+        <div class="subseccion">
+            <h3>Pseudo-clases y Pseudo-elementos</h3>
+            <p><strong>Pseudo-clases:</strong> Definen estados especiales de elementos.</p>
+            <div class="codigo-ejemplo">
+a:hover {
+    color: red;
+    text-decoration: underline;
+}
+
+input:focus {
+    outline: 2px solid blue;
+}
+
+li:nth-child(odd) {
+    background-color: #f0f0f0;
+}
+            </div>
+                    
+            <p><strong>Pseudo-elementos:</strong> Permiten estilizar partes específicas de elementos.</p>
+            <div class="codigo-ejemplo">
+p::first-line {
+    font-weight: bold;
+}
+
+p::before {
+    content: "→ ";
+    color: blue;
+}
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- PÁGINA 7: LISTAS DE DECLARACIONES -->
+        <div class="pagina contenido-listas">
+            <h1 class="titulo-seccion">Listas de Declaraciones CSS</h1>
+            <div class="contenido-pagina">
+                <div class="subseccion">
+                    <h3>Estructura de una Declaración CSS</h3>
+                    <p>Una declaración CSS consiste en una propiedad y su valor, separados por dos puntos y terminados con punto y coma.</p>
+                    <div class="codigo-ejemplo">
+selector {
+    propiedad: valor;
+    otra-propiedad: otro-valor;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Propiedades de Texto y Fuentes</h3>
+                    <div class="codigo-ejemplo">
+.texto-personalizado {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    text-align: center;
+    text-decoration: underline;
+    text-transform: uppercase;
+    color: #333333;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Propiedades de Fondo</h3>
+                    <div class="codigo-ejemplo">
+.fondo-complejo {
+    background-color: #f0f8ff;
+    background-image: url('imagen.jpg');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+    
+    /* Shorthand */
+    background: #f0f8ff url('imagen.jpg') no-repeat center/cover fixed;
+}
+                    </div>
+                </div>
+
+                <div class="destacado">
+                    <h3>Modelo de Caja (Box Model)</h3>
+                    <div class="codigo-ejemplo">
+.caja-ejemplo {
+    /* Contenido */
+    width: 300px;
+    height: 200px;
+    
+    /* Relleno interno */
+    padding: 20px 15px 10px 25px;
+    
+    /* Borde */
+    border: 2px solid #333;
+    border-radius: 10px;
+    
+    /* Margen externo */
+    margin: 10px auto;
+    
+    /* Box-sizing */
+    box-sizing: border-box;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Propiedades de Diseño y Layout</h3>
+                    <div class="codigo-ejemplo">
+.contenedor-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.elemento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 15px;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Propiedades de Transformación y Transición</h3>
+                    <div class="codigo-ejemplo">
+.elemento-animado {
+    transform: translateX(50px) rotate(45deg) scale(1.2);
+    transition: all 0.3s ease-in-out;
+    animation: mover 2s infinite alternate;
+}
+
+@keyframes mover {
+    from { transform: translateX(0); }
+    to { transform: translateX(100px); }
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 8: SECTION -->
+<div class="pagina contenido-section">
+    <h1 class="titulo-seccion">Elemento Section en HTML5</h1>
+    <div class="contenido-pagina">
+        <div class="subseccion">
+            <h3>¿Qué es el elemento Section?</h3>
+            <p>El elemento &lt;section&gt; representa una sección genérica de un documento o aplicación. Una sección es un grupo temático de contenido, típicamente con un encabezado. Es parte de los elementos semánticos introducidos en HTML5.</p>
+        </div>
+
+        <div class="subseccion">
+            <h3>Estructura y Uso</h3>
+            <div class="codigo-ejemplo">
+&lt;section&gt;
+    &lt;h2&gt;Título de la Sección&lt;/h2&gt;
+    &lt;p&gt;Contenido relacionado con el tema de la sección.&lt;/p&gt;
+    &lt;article&gt;
+        &lt;h3&gt;Artículo dentro de la sección&lt;/h3&gt;
+        &lt;p&gt;Contenido del artículo...&lt;/p&gt;
+    &lt;/article&gt;
+&lt;/section&gt;
+            </div>
+        </div>
+
+        <div class="subseccion">
+            <h3>Diferencias con otros elementos</h3>
+            <p><strong>Section vs Article:</strong> Section agrupa contenido temático, mientras que Article representa contenido independiente y reutilizable.</p>
+            <p><strong>Section vs Div:</strong> Section tiene significado semántico, div es puramente para presentación.</p>
+                    
+            <div class="codigo-ejemplo">
+&lt;!-- Uso correcto de section --&gt;
+&lt;section&gt;
+    &lt;h2&gt;Productos Destacados&lt;/h2&gt;
+    &lt;article&gt;Producto 1&lt;/article&gt;
+    &lt;article&gt;Producto 2&lt;/article&gt;
+&lt;/section&gt;
+
+&lt;!-- Uso incorrecto - mejor usar div --&gt;
+&lt;section class="sidebar"&gt;
+    &lt;p&gt;Contenido de barra lateral&lt;/p&gt;
+&lt;/section&gt;
+            </div>
+        </div>
+
+        <div class="destacado">
+            <h3>Beneficios del elemento Section</h3>
+            <ul>
+                <li><strong>SEO:</strong> Mejora la estructura para motores de búsqueda</li>
+                <li><strong>Accesibilidad:</strong> Facilita la navegación con lectores de pantalla</li>
+                <li><strong>Mantenimiento:</strong> Código más organizado y comprensible</li>
+                <li><strong>Outline:</strong> Crea una estructura jerárquica clara del documento</li>
+            </ul>
+        </div>
+
+        <div class="subseccion">
+            <h3>Ejemplo Práctico: Página de Blog</h3>
+            <div class="codigo-ejemplo">
+&lt;main&gt;
+    &lt;section&gt;
+        &lt;h1&gt;Blog de Tecnología&lt;/h1&gt;
+        
+        &lt;section&gt;
+            &lt;h2&gt;Artículos Recientes&lt;/h2&gt;
+            &lt;article&gt;
+                &lt;h3&gt;JavaScript en 2025&lt;/h3&gt;
+                &lt;p&gt;Las últimas tendencias...&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;h3&gt;CSS Grid vs Flexbox&lt;/h3&gt;
+                &lt;p&gt;Comparativa detallada...&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/section&gt;
+        
+        &lt;section&gt;
+            &lt;h2&gt;Categorías&lt;/h2&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Frontend&lt;/li&gt;
+                &lt;li&gt;Backend&lt;/li&gt;
+                &lt;li&gt;DevOps&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/section&gt;
+    &lt;/section&gt;
+&lt;/main&gt;
+            </div>
+        </div>
+    </div>
+</div>
+
+        <!-- PÁGINA 9: HGROUP -->
+        <div class="pagina contenido-hgroup">
+            <h1 class="titulo-seccion">Elemento Hgroup en HTML5</h1>
+            <div class="contenido-pagina">
+                <div class="subseccion">
+                    <h3>¿Qué es el elemento Hgroup?</h3>
+                    <p>El elemento &lt;hgroup&gt; se utiliza para agrupar elementos de encabezado (h1, h2, h3, etc.) cuando un encabezado tiene múltiples niveles, como un título principal y un subtítulo. Aunque fue removido de la especificación HTML5, sigue siendo útil conocer su propósito.</p>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Uso Original del Elemento Hgroup</h3>
+                    <div class="codigo-ejemplo">
+&lt;hgroup&gt;
+    &lt;h1&gt;DevTech Magazine&lt;/h1&gt;
+    &lt;h2&gt;Tecnologías Web Backend con JavaScript&lt;/h2&gt;
+&lt;/hgroup&gt;
+                    </div>
+                    
+                    <p>El propósito era crear un outline limpio donde solo el encabezado de mayor nivel dentro del hgroup contribuyera al esquema del documento.</p>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Alternativas Modernas</h3>
+                    <p>Aunque hgroup fue removido, podemos lograr el mismo efecto semántico con otras técnicas:</p>
+                    
+                    <p><strong>Opción 1: Usar header con encabezados apropiados</strong></p>
+                    <div class="codigo-ejemplo">
+&lt;header&gt;
+    &lt;h1&gt;DevTech Magazine&lt;/h1&gt;
+    &lt;p class="subtitulo"&gt;Tecnologías Web Backend con JavaScript&lt;/p&gt;
+&lt;/header&gt;
+                    </div>
+                    
+                    <p><strong>Opción 2: Usar div con roles ARIA</strong></p>
+                    <div class="codigo-ejemplo">
+&lt;div role="group" aria-labelledby="titulo-principal"&gt;
+    &lt;h1 id="titulo-principal"&gt;DevTech Magazine&lt;/h1&gt;
+    &lt;h2 aria-describedby="titulo-principal"&gt;Tecnologías Web Backend&lt;/h2&gt;
+&lt;/div&gt;
+                    </div>
+                </div>
+
+                <div class="destacado">
+                    <h3>Mejores Prácticas Actuales</h3>
+                    <ul>
+                        <li>Usar elementos &lt;header&gt; para agrupar títulos relacionados</li>
+                        <li>Aplicar clases CSS para subtítulos en lugar de encabezados de menor nivel</li>
+                        <li>Mantener una jerarquía lógica de encabezados (h1 → h2 → h3)</li>
+                        <li>Usar atributos ARIA cuando sea necesario para accesibilidad</li>
+                    </ul>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Ejemplo con CSS para Subtítulos</h3>
+                    <div class="codigo-ejemplo">
+/* HTML */
+&lt;header class="encabezado-articulo"&gt;
+    &lt;h1&gt;Desarrollo Web Moderno&lt;/h1&gt;
+    &lt;p class="subtitulo"&gt;Guía completa para principiantes&lt;/p&gt;
+    &lt;p class="meta"&gt;Por Frahiner Camejo - 27 de Junio, 2025&lt;/p&gt;
+&lt;/header&gt;
+
+/* CSS */
+.encabezado-articulo h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.2em;
+    color: #2c3e50;
+}
+
+.subtitulo {
+    font-size: 1.4em;
+    color: #7f8c8d;
+    font-weight: 300;
+    margin-bottom: 1em;
+}
+
+.meta {
+    font-size: 0.9em;
+    color: #95a5a6;
+    border-top: 1px solid #ecf0f1;
+    padding-top: 0.5em;
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 10: POSICIONAMIENTO -->
+        <div class="pagina contenido-posicionamiento">
+            <h1 class="titulo-seccion">Posicionamiento de Elementos Web</h1>
+            <div class="contenido-pagina">
+                <div class="subseccion">
+                    <h3>Tipos de Posicionamiento CSS</h3>
+                    <p>El posicionamiento controla cómo se ubican los elementos en la página web. CSS ofrece varios tipos de posicionamiento:</p>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Position: Static</h3>
+                    <p>Es el posicionamiento por defecto. Los elementos siguen el flujo normal del documento.</p>
+                    <div class="codigo-ejemplo">
+.elemento-static {
+    position: static;
+    /* top, right, bottom, left no tienen efecto */
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Position: Relative</h3>
+                    <p>El elemento se posiciona en relación a su posición original en el flujo normal.</p>
+                    <div class="codigo-ejemplo">
+.elemento-relative {
+    position: relative;
+    top: 20px;
+    left: 30px;
+    /* Se mueve 20px hacia abajo y 30px hacia la derecha */
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Position: Absolute</h3>
+                    <p>El elemento se posiciona en relación al ancestro posicionado más cercano.</p>
+                    <div class="codigo-ejemplo">
+.contenedor {
+    position: relative; /* Establece contexto de posicionamiento */
+    width: 400px;
+    height: 300px;
+}
+
+.elemento-absolute {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    /* Se posiciona desde el contenedor padre */
+}
+                    </div>
+                </div>
+
+                <div class="destacado">
+                    <h3>Position: Fixed</h3>
+                    <p>El elemento se posiciona en relación a la ventana del navegador y permanece fijo al hacer scroll.</p>
+                    <div class="codigo-ejemplo">
+.navegacion-fija {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #333;
+    z-index: 1000;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Position: Sticky</h3>
+                    <p>Combina relative y fixed. El elemento es relative hasta que alcanza una posición específica, luego se vuelve fixed.</p>
+                    <div class="codigo-ejemplo">
+.encabezado-sticky {
+    position: sticky;
+    top: 0;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Z-Index y Contexto de Apilamiento</h3>
+                    <p>El z-index controla el orden de apilamiento de elementos posicionados.</p>
+                    <div class="codigo-ejemplo">
+.modal-fondo {
+    position: fixed;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-contenido {
+    position: relative;
+    z-index: 101;
+    background: white;
+}
+                    </div>
+                </div>
+
+                <div class="subseccion">
+                    <h3>Flexbox y Grid: Sistemas de Layout Modernos</h3>
+                    <div class="codigo-ejemplo">
+/* Flexbox para layout unidimensional */
+.contenedor-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Grid para layout bidimensional */
+.contenedor-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: 
+        "header header header"
+        "sidebar main aside"
+        "footer footer footer";
+    min-height: 100vh;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main { grid-area: main; }
+.aside { grid-area: aside; }
+.footer { grid-area: footer; }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PÁGINA 11: CONTRAPORTADA -->
+        <div class="pagina contraportada">
+            <div class="creditos-finales">
+                <h1>Créditos y Agradecimientos</h1>
+                
+                <h3>Desarrollo y Contenido</h3>
+                <p><strong>Frahiner Camejo</strong><br>
+                C.I.: 28.413.050<br>
+                Estudiante de Ingeniería de Sistemas<br>
+                Universidad Bicentenaria de Aragua</p>
+                
+                <h3>Institución Educativa</h3>
+                <p>Universidad Bicentenaria de Aragua<br>
+                Escuela de Ingeniería de Sistemas<br>
+                San Antonio de los Altos, Estado Miranda<br>
+                Venezuela</p>
+                
+                <h3>Tecnologías Utilizadas</h3>
+                <ul style="list-style: none; text-align: center;">
+                    <li>HTML5 Semántico</li>
+                    <li>CSS3 Avanzado</li>
+                    <li>JavaScript ES6+</li>
+                    <li>Diseño Responsivo</li>
+                    <li>Animaciones CSS</li>
+                </ul>
+                
+                <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3);">
+                    <h2>Tu revistica web</h2>
+                    <p>© 2025 - Todos los derechos reservados</p>
+                    <p><em>"Innovando el futuro del desarrollo web"</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        let paginaActual = 0;
+        const totalPaginas = 11;
+
+        function mostrarPagina(numeroPagina) {
+            // Ocultar todas las páginas
+            const paginas = document.querySelectorAll('.pagina');
+            paginas.forEach(pagina => pagina.classList.remove('activa'));
+            
+            // Mostrar la página seleccionada
+            paginas[numeroPagina].classList.add('activa');
+            
+            // Actualizar botones de navegación
+            const botones = document.querySelectorAll('.nav-btn');
+            botones.forEach(btn => btn.classList.remove('activo'));
+            botones[numeroPagina].classList.add('activo');
+            
+            paginaActual = numeroPagina;
+        }
+
+        // para navegar con las flechas
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && paginaActual < totalPaginas - 1) {
+                mostrarPagina(paginaActual + 1);
+            } else if (e.key === 'ArrowLeft' && paginaActual > 0) {
+                mostrarPagina(paginaActual - 1);
+            }
+        });
+
+        // Animaciones de entrada
+        function animarElementos() {
+            const elementos = document.querySelectorAll('.subseccion, .destacado');
+            elementos.forEach((elemento, index) => {
+                elemento.style.opacity = '0';
+                elemento.style.transform = 'translateY(20px)';
+                elemento.style.transition = 'all 0.6s ease';
+                
+                setTimeout(() => {
+                    elemento.style.opacity = '1';
+                    elemento.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        }
+
+        // Ejecutar animaciones cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            animarElementos();
+        });
+
+        // Efecto de scroll suave para navegación
+        function scrollSuave(objetivo) {
+            objetivo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Contador de páginas visitadas
+        let paginasVisitadas = new Set();
+
+        function registrarVisita(numeroPagina) {
+            paginasVisitadas.add(numeroPagina);
+            console.log(`Páginas visitadas: ${paginasVisitadas.size}/${totalPaginas}`);
+        }
+
+        // Modificar la función mostrarPagina para incluir el registro
+        const mostrarPaginaOriginal = mostrarPagina;
+        mostrarPagina = function(numeroPagina) {
+            mostrarPaginaOriginal(numeroPagina);
+            registrarVisita(numeroPagina);
+        };
+
+        // Registrar la primera página
+        registrarVisita(0);
+    </script>
+</body>
+</html>
