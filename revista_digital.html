@@ -37,37 +37,69 @@ body {
 .pagina.activa {
     display: block;
 }
+.pagina.portada.activa {
+    display: flex;
+}
+.pagina.contraportada.activa {
+    display: flex;
+}
 
 /* NAVEGACIÓN */
 .navegacion {
     position: fixed;
-    top: 20px;
+    top: 50%;
     right: 20px;
+    transform: translateY(-50%);
     z-index: 1000;
-    background: rgba(0,0,0,0.8);
-    border-radius: 25px;
-    padding: 10px;
+    background: rgba(0,0,0,0.9);
+    border-radius: 20px;
+    padding: 15px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .nav-btn {
-    background: #4CAF50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
     color: white;
     border: none;
-    padding: 8px 15px;
-    margin: 0 5px;
-    border-radius: 20px;
+    padding: 12px 8px;
+    border-radius: 15px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 10px;
     transition: all 0.3s ease;
+    min-width: 70px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
 }
 
 .nav-btn:hover {
-    background: #45a049;
-    transform: scale(1.05);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 }
 
-.nav-btn.activo {
-    background: #ff6b6b;
+@media (max-width: 768px) {
+    .navegacion {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        right: auto;
+        top: auto;
+        transform: translateX(-50%);
+        flex-direction: row;
+        padding: 10px 15px;
+        overflow-x: auto;
+        max-width: calc(100vw - 40px);
+    }
+    
+    .nav-btn {
+        min-width: 60px;
+        font-size: 9px;
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
 }
 
 /* PORTADA */
@@ -75,8 +107,7 @@ body {
     background: linear-gradient(45deg, #1e3c72, #2a5298, #3b82f6);
     color: white;
     text-align: center;
-    display: flex;
-        flex-direction: column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -170,6 +201,35 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
+.item-indice {
+    cursor: pointer;
+}
+
+.item-indice:active {
+    transform: translateX(5px) scale(0.98);
+}
+
+/* Efecto de página tipo revista */
+.pagina {
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Indicador de progreso */
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4CAF50, #ff6b6b);
+    z-index: 999;
+    transition: width 0.3s ease;
+}
+
 /* CONTENIDO GENERAL */
 .contenido-pagina {
     line-height: 1.8;
@@ -215,6 +275,14 @@ body {
     border-radius: 12px;
     margin: 20px 0;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+.breadcrumb {
+    background: rgba(255,255,255,0.9);
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 /* EDITORIAL */
@@ -308,7 +376,6 @@ body {
 .contraportada {
     background: linear-gradient(45deg, #2c3e50, #34495e, #4a6741);
     color: white;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -358,6 +425,8 @@ body {
             <button class="nav-btn" onclick="mostrarPagina(8)">Hgroup</button>
             <button class="nav-btn" onclick="mostrarPagina(9)">Posicionamiento</button>
             <button class="nav-btn" onclick="mostrarPagina(10)">Contraportada</button>
+            <button class="nav-btn" onclick="mostrarPagina(0)" style="margin-top: 10px; background: linear-gradient(135deg, #ff6b6b, #4ecdc4);">🏠 Inicio</button>
+<button class="nav-btn" onclick="mostrarPagina(10)" style="background: linear-gradient(135deg, #a8e6cf, #dcedc1);">📋 Créditos</button>
         </div>
 
         <!-- PÁGINA 1: PORTADA -->
@@ -387,35 +456,35 @@ body {
 <div class="pagina indice">
     <h1>Índice de Contenidos</h1>
     <div class="lista-contenidos">
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(2)">
             <span><strong>Editorial</strong> - Introducción a las tecnologías web</span>
             <span>Página 3</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(3)">
             <span><strong>Directorio</strong> - Equipo de desarrollo</span>
             <span>Página 4</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(4)">
             <span><strong>Hojas de Estilo CSS</strong> - Fundamentos y aplicaciones</span>
             <span>Página 5</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(5)">
             <span><strong>Selectores CSS</strong> - Tipos y uso avanzado</span>
             <span>Página 6</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(6)">
             <span><strong>Listas de Declaraciones</strong> - Propiedades y valores</span>
             <span>Página 7</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(7)">
             <span><strong>Elemento Section</strong> - Estructura semántica</span>
             <span>Página 8</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(8)">
             <span><strong>Elemento Hgroup</strong> - Agrupación de títulos</span>
             <span>Página 9</span>
         </div>
-        <div class="item-indice">
+        <div class="item-indice" onclick="mostrarPagina(9)">
             <span><strong>Posicionamiento</strong> - Layout y diseño web</span>
             <span>Página 10</span>
         </div>
@@ -425,6 +494,10 @@ body {
         <!-- PÁGINA 3: EDITORIAL -->
 <div class="pagina editorial">
     <h1 class="titulo-seccion">Editorial</h1>
+    <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
     <div class="carta-editorial">
         <h2>Bienvenidos al Futuro del Desarrollo Web</h2>
         <p>En esta era digital, el desarrollo web backend con JavaScript ha revolucionado la manera en que concebimos y construimos aplicaciones web. Esta revista presenta un recorrido completo por las tecnologías fundamentales que todo desarrollador moderno debe dominar.</p>
@@ -447,6 +520,10 @@ body {
         <!-- PÁGINA 4: DIRECTORIO -->
 <div class="pagina directorio">
     <h1 class="titulo-seccion">Directorio del Equipo</h1>
+    <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
     <div class="equipo-grid">
         <div class="miembro-equipo">
             <div class="avatar">FC</div>
@@ -476,6 +553,10 @@ body {
         <!-- PÁGINA 5: HOJAS DE ESTILO -->
 <div class="pagina contenido-hojas-estilo">
     <h1 class="titulo-seccion">Hojas de Estilo CSS</h1>
+    <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
     <div class="contenido-pagina">
         <div class="subseccion">
             <h3>¿Qué son las Hojas de Estilo?</h3>
@@ -534,6 +615,10 @@ body {
         <!-- PÁGINA 6: SELECTORES -->
 <div class="pagina contenido-selectores">
     <h1 class="titulo-seccion">Selectores CSS</h1>
+    <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
     <div class="contenido-pagina">
         <div class="subseccion">
             <h3>Selectores Básicos</h3>
@@ -650,6 +735,10 @@ p::before {
         <!-- PÁGINA 7: LISTAS DE DECLARACIONES -->
         <div class="pagina contenido-listas">
             <h1 class="titulo-seccion">Listas de Declaraciones CSS</h1>
+            <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
             <div class="contenido-pagina">
                 <div class="subseccion">
                     <h3>Estructura de una Declaración CSS</h3>
@@ -764,6 +853,10 @@ selector {
         <!-- PÁGINA 8: SECTION -->
 <div class="pagina contenido-section">
     <h1 class="titulo-seccion">Elemento Section en HTML5</h1>
+    <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
     <div class="contenido-pagina">
         <div class="subseccion">
             <h3>¿Qué es el elemento Section?</h3>
@@ -851,6 +944,10 @@ selector {
         <!-- PÁGINA 9: HGROUP -->
         <div class="pagina contenido-hgroup">
             <h1 class="titulo-seccion">Elemento Hgroup en HTML5</h1>
+            <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
             <div class="contenido-pagina">
                 <div class="subseccion">
                     <h3>¿Qué es el elemento Hgroup?</h3>
@@ -938,6 +1035,10 @@ selector {
         <!-- PÁGINA 10: POSICIONAMIENTO -->
         <div class="pagina contenido-posicionamiento">
             <h1 class="titulo-seccion">Posicionamiento de Elementos Web</h1>
+            <div class="breadcrumb">
+    <span onclick="mostrarPagina(0)" style="cursor: pointer; color: #3498db;">Tu revistica web</span> 
+    > <span style="color: #7f8c8d;">Página actual</span>
+</div>
             <div class="contenido-pagina">
                 <div class="subseccion">
                     <h3>Tipos de Posicionamiento CSS</h3>
@@ -1096,86 +1197,103 @@ selector {
                     <h2>Tu revistica web</h2>
                     <p>© 2025 - Todos los derechos reservados</p>
                     <p><em>"Innovando el futuro del desarrollo web"</em></p>
+                    <button onclick="mostrarPagina(0)" style="margin-top: 20px; padding: 12px 24px; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: all 0.3s ease;">
+    🏠 Volver al Inicio
+</button>
                 </div>
             </div>
         </div>
     </div>
 
-    
     <script>
-        let paginaActual = 0;
-        const totalPaginas = 11;
+  // Variables globales
+  let paginaActual = 0;
+  const totalPaginas = 11;
+  const paginasVisitadas = new Set();
 
-        function mostrarPagina(numeroPagina) {
-            // Ocultar todas las páginas
-            const paginas = document.querySelectorAll('.pagina');
-            paginas.forEach(pagina => pagina.classList.remove('activa'));
-            
-            // Mostrar la página seleccionada
-            paginas[numeroPagina].classList.add('activa');
-            
-            // Actualizar botones de navegación
-            const botones = document.querySelectorAll('.nav-btn');
-            botones.forEach(btn => btn.classList.remove('activo'));
-            botones[numeroPagina].classList.add('activo');
-            
-            paginaActual = numeroPagina;
-        }
+  // Registra la visita y muestra en consola
+  function registrarVisita(n) {
+    paginasVisitadas.add(n);
+    console.log(`Páginas visitadas: ${paginasVisitadas.size}/${totalPaginas}`);
+  }
 
-        // para navegar con las flechas
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight' && paginaActual < totalPaginas - 1) {
-                mostrarPagina(paginaActual + 1);
-            } else if (e.key === 'ArrowLeft' && paginaActual > 0) {
-                mostrarPagina(paginaActual - 1);
-            }
-        });
+  // Actualiza la barra de progreso
+  function actualizarProgreso() {
+    const progreso = ((paginaActual + 1) / totalPaginas) * 100;
+    document.querySelector('.progress-bar').style.width = progreso + '%';
+  }
 
-        // Animaciones de entrada
-        function animarElementos() {
-            const elementos = document.querySelectorAll('.subseccion, .destacado');
-            elementos.forEach((elemento, index) => {
-                elemento.style.opacity = '0';
-                elemento.style.transform = 'translateY(20px)';
-                elemento.style.transition = 'all 0.6s ease';
-                
-                setTimeout(() => {
-                    elemento.style.opacity = '1';
-                    elemento.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
-        }
+  // Muestra la página indicada, con animaciones + registro + progreso
+  function mostrarPagina(n) {
+    // 1. Animación de salida
+    const actualEl = document.querySelector('.pagina.activa');
+    if (actualEl) {
+      actualEl.style.opacity = '0';
+      actualEl.style.transform = 'translateX(-20px)';
+    }
 
-        // Ejecutar animaciones cuando se carga la página
-        document.addEventListener('DOMContentLoaded', function() {
-            animarElementos();
-        });
+    setTimeout(() => {
+      // 2. Cambiar clases activa/activo en páginas y botones
+      document.querySelectorAll('.pagina').forEach(p => p.classList.remove('activa'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('activo'));
 
-        // Efecto de scroll suave para navegación
-        function scrollSuave(objetivo) {
-            objetivo.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+      const nueva = document.querySelectorAll('.pagina')[n];
+      nueva.classList.add('activa');
+      document.querySelectorAll('.nav-btn')[n]?.classList.add('activo');
 
-        // Contador de páginas visitadas
-        let paginasVisitadas = new Set();
+      // 3. Animación de entrada
+      nueva.style.opacity = '0';
+      nueva.style.transform = 'translateX(20px)';
+      setTimeout(() => {
+        nueva.style.opacity = '1';
+        nueva.style.transform = 'translateX(0)';
+      }, 50);
 
-        function registrarVisita(numeroPagina) {
-            paginasVisitadas.add(numeroPagina);
-            console.log(`Páginas visitadas: ${paginasVisitadas.size}/${totalPaginas}`);
-        }
+      // 4. Estado, registro y progreso
+      paginaActual = n;
+      registrarVisita(n);
+      actualizarProgreso();
+    }, 200);
+  }
 
-        // Modificar la función mostrarPagina para incluir el registro
-        const mostrarPaginaOriginal = mostrarPagina;
-        mostrarPagina = function(numeroPagina) {
-            mostrarPaginaOriginal(numeroPagina);
-            registrarVisita(numeroPagina);
-        };
+  // Navegación con flechas
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' && paginaActual < totalPaginas - 1) {
+      mostrarPagina(paginaActual + 1);
+    } else if (e.key === 'ArrowLeft' && paginaActual > 0) {
+      mostrarPagina(paginaActual - 1);
+    }
+  });
 
-        // Registrar la primera página
-        registrarVisita(0);
-    </script>
+  // Animación de entrada de subsecciones y destacados
+  function animarElementos() {
+    document.querySelectorAll('.subseccion, .destacado').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'all 0.6s ease';
+      setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }, i * 200);
+    });
+  }
+
+  // Inicialización al cargar el DOM
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Animar elementos estáticos
+    animarElementos();
+
+    // 2. Registrar primera visita
+    registrarVisita(0);
+
+    // 3. Crear barra de progreso
+    const bar = document.createElement('div');
+    bar.className = 'progress-bar';
+    document.body.appendChild(bar);
+
+    // 4. Mostrar página inicial y actualizar progreso
+    mostrarPagina(0);
+  });
+</script>
 </body>
 </html>
