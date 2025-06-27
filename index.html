@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tecnologías Web Backend</title>
 
-<style>
-  /* CONFIGURACIÓN BÁSICA */
+    <style>
+  /* RESET Y CONFIGURACIÓN BÁSICA */
   * {
     margin: 0;
     padding: 0;
@@ -108,7 +108,6 @@
 
   /* PORTADA */
   .portada {
-    display: flex;
     background: linear-gradient(45deg, #1e3c72, #2a5298, #3b82f6);
     color: white;
     text-align: center;
@@ -336,7 +335,6 @@
 
   /* CONTRAPORTADA */
   .contraportada {
-    display: flex;
     background: linear-gradient(45deg, #2c3e50, #34495e, #4a6741);
     color: white;
     flex-direction: column;
@@ -355,6 +353,9 @@
 
   /* RESPONSIVE */
   @media (max-width: 768px) {
+     body {
+    padding-bottom: 80px;  
+  }
     .pagina {
       padding: 20px;
     }
@@ -364,20 +365,22 @@
     }
 
     .navegacion {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      flex-direction: row;
-      overflow-x: auto;
-      overflow-y: hidden;
-      max-width: 95vw;
-      padding: 10px 12px;
-      gap: 6px;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(6px);
-      z-index: 1000;
+    top: auto;
+    right: auto;
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 95vw;
+    padding: 10px 12px;
+    gap: 6px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
     }
 
     .navegacion::-webkit-scrollbar {
